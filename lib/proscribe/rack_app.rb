@@ -2,7 +2,7 @@ require 'proton'
 require 'proton/server'
 require 'shake'
 
-# Module: RackApp
+# Module: RackApp (ProScribe)
 # Provides a Rack app.
 #
 # ## Usage
