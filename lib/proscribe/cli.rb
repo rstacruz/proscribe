@@ -19,54 +19,19 @@ class ProScribe::CLI < Shake
   task.description = "Builds the project files"
 
   task(:start) do
-    require 'fssm'
-
     project.make
 
-    threads = Array.new
-    monitor = lambda { |path, &blk|
-      updated = lambda { |path, file|
-        status "Updated #{file}"
-        blk.call
-      }
+    w = ProScribe::Watcher.new(project) { |path, file| status "Updated #{file}" }
 
-      FSSM.monitor(path) do
-        update(&updated)
-        create(&updated)
-        delete(&updated)
-      end
-    }
-
-    # Monitor the project's files
-    project.config.files.each do |group|
-      threads << Thread.new {
-        path = project.root(group.source)
-        path = path.gsub(/\*.*$/, '')
-        path = File.realpath(path)
-
-        monitor.call(path) { project.make }
-      }
-    end
-
-    # Monitor the project's manual
-    threads << Thread.new {
-      monitor.call(project.manual) { project.make }
-    }
-
-
-    # Monitor ProScribe's default theme
-    threads << Thread.new {
-      monitor.call(ProScribe.root('data')) { project.make }
-    }
-
-    threads << Thread.new {
+    server = Thread.new {
       Dir.chdir(project.dir) {
         status "Starting Proton server"
         system "proton start", *ARGV[1..-1]
       }
     }
 
-    threads.each { |t| t.join }
+    w.join
+    server.join
   end
   task.description = "Starts a preview server on localhost"
 end

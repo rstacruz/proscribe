@@ -1,6 +1,10 @@
 # Class: Project (ProScribe)
 # A project.
 #
+# ## Internal usage
+#
+#     p = Project.new(config_file)
+#
 module ProScribe
   class Project
     # Attribute: config (ProScribe::Project)

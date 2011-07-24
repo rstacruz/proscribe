@@ -19,7 +19,22 @@ module ProScribe
   autoload :Helpers,    "#{PREFIX}/proscribe/helpers"
   autoload :CLI,        "#{PREFIX}/proscribe/cli"
   autoload :Extractor,  "#{PREFIX}/proscribe/extractor"
+  autoload :Watcher,    "#{PREFIX}/proscribe/watcher"
+  autoload :RackApp,    "#{PREFIX}/proscribe/rack_app"
 
   require "#{PREFIX}/proscribe/version"
+
+  # Class method: rack_app (ProScribe)
+  # Returns a Rack app for the current dir's ProScribe project.
+  #
+  # ## Usage
+  #
+  #     [config.ru (ruby)]
+  #     require 'proscribe'
+  #     run ProScribe.rack_app
+  #
+  def self.rack_app
+    RackApp.run! && Proton::Server
+  end
 end
 
