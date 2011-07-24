@@ -25,9 +25,13 @@ module ProScribe
       puts " * #{msg}"
     end
 
-    def copy_files(from, to)
+    def copy_files(from, to, options={})
+      exceptions = options[:except] || []
+
       Dir["#{from}/**/*"].each do |f|
         next  unless File.file?(f)
+        next  if exceptions.include?(File.basename(f))
+
         target = File.join(to, f.gsub(from, ''))
 
         FileUtils.mkdir_p File.dirname(target)

@@ -48,7 +48,9 @@ module ProScribe
 
       # Copy the files over
       copy_files ProScribe.root('data/default/'), dir
-      copy_files manual_path, dir
+
+      # Copy manual files over
+      copy_files manual_path, dir, :except => ['Gemfile', 'Gemfile.lock', 'config.ru']
 
       # Extract block comments
       config.files.each do |group|
@@ -73,9 +75,13 @@ module ProScribe
 
   private
 
-    def copy_files(from, to)
+    def copy_files(from, to, options={})
+      exceptions = options[:except] || []
+
       Dir["#{from}/**/*"].each do |f|
         next  unless File.file?(f)
+        next  if exceptions.include?(File.basename(f))
+
         target = File.join(to, f.gsub(from, ''))
 
         FileUtils.mkdir_p File.dirname(target)
