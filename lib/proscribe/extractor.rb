@@ -112,7 +112,7 @@ module ProScribe
       depth = from.to_s.count('/')
       indent = (depth > 1 ? '../'*(depth-1) : './')[0..-2]
 
-      # First pass: {Helpers::content_for} to become links
+      # First pass, {Helpers::content_for} to become links
       str = str.gsub(/{([^}]*?)}/) { |s|
         s = s.gsub(/{|}/, '')
 
@@ -128,7 +128,7 @@ module ProScribe
         s
       }
 
-      # Second pass: relativize
+      # Second pass, relativize
       re = /href=['"](\/(?:.*?))['"]/
       str.gsub(re) { |s|
         url = s.match(re) && $1

@@ -1,3 +1,6 @@
+# Class: CLI (ProScribe)
+# The CLI runner.
+#
 class ProScribe::CLI < Shake
   include Shake::Defaults
   extend ProScribe::Helpers
@@ -10,7 +13,7 @@ class ProScribe::CLI < Shake
       system "proton build"
     }
 
-    FileUtils.cp_r project.dir('_output'), project.root(project.config.output)
+    copy_files project.dir('_output'), project.root(project.config.output)
   end
   
   task.description = "Builds the project files"
@@ -24,7 +27,7 @@ class ProScribe::CLI < Shake
     monitor = lambda { |path, &blk|
       updated = lambda { |path, file|
         status "Updated #{file}"
-        yield
+        blk.call
       }
 
       FSSM.monitor(path) do

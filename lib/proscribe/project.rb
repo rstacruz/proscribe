@@ -1,5 +1,11 @@
+# Class: Project (ProScribe)
+# A project.
+#
 module ProScribe
   class Project
+    # Attribute: config (ProScribe::Project)
+    # Returns a hash of the project's configuration, pulled from Scribefile.
+    #
     attr_reader :config
 
     def initialize(config_file)
@@ -12,14 +18,27 @@ module ProScribe
       @config.files   ||= Array.new
     end
 
+    # Attribute: root (ProScribe::Project)
+    # Returns the root path.
+    #
+    # ##  Usage
+    #     project.root
+    #     project.root(*args)
+    #
     def root(*a)
       File.join(@root, *a)
     end
 
+    # Attribute: manual_path (ProScribe::Project)
+    # Returns the absolute path to the projects's manual.
+    #
     def manual_path
       root(@config.manual)
     end
 
+    # Method: make (ProScribe::Project)
+    # Creates the temp dir from the project's manual and inline comments.
+    #
     def make
       dir
 
@@ -34,6 +53,9 @@ module ProScribe
       end
     end
 
+    # Attribute: dir (ProScribe::Project)
+    # Returns the path to the temporary Proton project.
+    #
     def dir(*a)
       @dir ||= begin
         dir = File.join(Dir.tmpdir, File.basename(root))

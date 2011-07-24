@@ -5,6 +5,9 @@ require 'shake'
 require 'hashie'
 require 'tilt'
 
+# Module: ProScribe
+# The main module.
+#
 module ProScribe
   def self.root(*a)
     File.join(File.expand_path('../../', __FILE__), *a)
@@ -17,6 +20,6 @@ module ProScribe
   autoload :CLI,        "#{PREFIX}/proscribe/cli"
   autoload :Extractor,  "#{PREFIX}/proscribe/extractor"
 
-  require "#{PREFIX}/version"
+  require "#{PREFIX}/proscribe/version"
 end
 
