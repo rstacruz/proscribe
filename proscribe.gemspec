@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors = ["Rico Sta. Cruz"]
   s.email = ["rico@sinefunc.com"]
   s.homepage = "http://github.com/rstacruz/proscribe"
-  s.files = Dir["{bin,lib,test}/**/*", "*.md", "Rakefile"].reject { |f| File.directory?(f) }
+  s.files = Dir["{data,bin,lib,test}/**/*", "*.md", "Rakefile"].reject { |f| File.directory?(f) }
   s.executables = Dir["bin/*"].map { |f| File.basename(f) }
 
   s.add_dependency "hashie", "~> 1.0.0"

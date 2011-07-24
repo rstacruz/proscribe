@@ -34,5 +34,11 @@ class ProScribe::CLI < Shake
     server.join
   end
   task.description = "Starts a preview server on localhost"
+
+  task(:rack) do
+    project
+    copy_files ProScribe.root('data/rack'), project.root
+  end
+  task.description = "Makes a project Rack-compatible"
 end
   
