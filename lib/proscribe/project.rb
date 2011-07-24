@@ -55,7 +55,7 @@ module ProScribe
       # Extract block comments
       config.files.each do |group|
         ex = ProScribe::Extractor.new Dir[root(group.source)]
-        ex.write! File.join(dir, group.target)
+        ex.write! File.join(dir, group.prefix || '')
       end
     end
 
