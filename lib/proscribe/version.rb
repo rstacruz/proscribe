@@ -3,9 +3,9 @@ module ProScribe
   # Returns the version of the ProScribe gem.
   #
   # ##  Example
-  #     ProScribe.version     #=> "0.0.1"
+  #     ProScribe.version     #=> "0.0.2"
   #
   def self.version
-    "0.0.1"
+    "0.0.2"
   end
 end
