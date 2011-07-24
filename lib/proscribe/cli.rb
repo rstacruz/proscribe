@@ -55,7 +55,7 @@ class ProScribe::CLI < Shake
     gitdeploy(repo, "gh-pages")
   end
   task.usage = "gh-pages username/repo"
-  task.description = "Deploy to GitHub pages."
+  task.description = "Deploy to GitHub pages"
 
   invalid do
     if task(command)
