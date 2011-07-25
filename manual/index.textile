@@ -73,3 +73,4 @@ h4. Real-time previews
 You may also preview your changes in real time. Do this, then point your browser to @http://localhost:4833@ to see your changes in real time.
 </section>
 
+<a class='github-link' href="http://github.com/rstacruz/proscribe">Source code</a>

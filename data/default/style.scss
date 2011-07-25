@@ -396,6 +396,47 @@ section.literate {
     h4 + * { margin-top: 0; }
 }
 
+a.github-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  background: url('https://d3nwyuy0nl342s.cloudfront.net/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67') top right no-repeat;
+  text-indent: -9999px;
+  width: 200px; height: 200px;
+  z-index: 1;
+}
+
+section.aux-links {
+  position: absolute;
+  top: 40px;
+  right: 0px;
+
+  ul, li { list-style-type: none; margin: 0; padding: 0; }
+
+  a {
+    overflow: hidden;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 8pt;
+    padding: 5px 10px;
+    width: 140px; 
+    font-size: 8pt;
+    line-height: 12pt;
+    font-weight: bold;
+    @include border-left-radius(4px);
+    background: #eee; }
+
+  a::after {
+    content: '›'; color: #aaa;
+    font-size: 1.5em;
+    float: right; }
+
+  a:hover {
+    background: #888; color: #ddd;
+    text-shadow: 1px 1px 0 rgba(black, 0.1); }
+}
+
 //
 // Prettify
 //
