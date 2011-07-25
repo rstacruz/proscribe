@@ -87,7 +87,9 @@ class ProScribe::CLI < Shake
       # Did we get the correct branch? Just add on top of it.
       copy_files path, File.join(temppath, prefix)
 
-      system "(git add .; git add -u; git commit -m .) > /dev/null"
+      #system "(git add .; git add -u; git commit -m .) > /dev/null"
+      puts "git push origin #{branch}"
+      system "(git add .; git add -u; git commit -m .)"
       system "git push origin #{branch}"
 
     else
