@@ -45,16 +45,16 @@ class ProScribe::CLI < Shake
   # proscribe ghpages rstacruz/proscribe
   task (:'gh-pages') do
     project
-    path  = project.root(project.config.output)
-    where = params.first or wrong_usage
-    repo  = "git@github.com:#{where}.git"
+    path   = project.root(project.config.output)
+    where  = params[0] or wrong_usage
+    prefix = params[1] || ''
+    repo   = "git@github.com:#{where}.git"
 
-    status "Deploying to #{repo}..."
-    status "(WARNING: This will overwrite history. Press ^C to abort.)"
+    puts "Fetching #{repo} (gh-pages)"
 
-    gitdeploy(repo, "gh-pages")
+    gitdeploy(repo, "gh-pages", prefix)
   end
-  task.usage = "gh-pages username/repo"
+  task.usage = "gh-pages username/repo [dirprefix]"
   task.description = "Deploy to GitHub pages"
 
   invalid do
@@ -70,19 +70,42 @@ class ProScribe::CLI < Shake
     end
   end
 
-  def self.gitdeploy(dest, branch)
+  def self.gitdeploy(dest, branch, prefix='')
     project
     path = project.root(project.config.output)
 
     temppath = File.join(Dir.tmpdir, "proton-#{Time.now.to_i}")
-    copy_files path, temppath
-
-    Dir.chdir(temppath) {
-      system "(git init . && git add . && git commit -m .) > /dev/null"
-      system "git push #{dest} master:#{branch} --force"
-    }
-
     FileUtils.rm_rf temppath
+
+    # Clone the gh-pages branch.
+    system "git clone #{dest} -b #{branch} #{temppath}"
+
+    current_branch = Dir.chdir(temppath) { `git symbolic-ref HEAD`.strip.split('/') }
+
+    if current_branch.last == branch
+      puts "Adding files on to #{prefix}/..."
+      # Did we get the correct branch? Just add on top of it.
+      copy_files path, File.join(temppath, prefix)
+
+      system "(git add .; git add -u; git commit -m .) > /dev/null"
+      system "git push #{dest} #{branch}"
+
+    else
+      puts "Warning: No #{branch} branch found, starting over."
+
+      # Else, clean it and start over.
+      FileUtils.rm_rf temppath
+      FileUtils.mkdir temppath
+
+      copy_files path, File.join(temppath, prefix)
+
+      Dir.chdir(temppath) {
+        system "(git init . && git add . && git commit -m .) > /dev/null"
+        system "git push #{dest} master:#{branch} --force"
+      }
+    end
+
+    # FileUtils.rm_rf temppath
   end
 
 end
