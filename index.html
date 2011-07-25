@@ -5,7 +5,7 @@
 <meta charset='UTF-8' />
 <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
 <meta content='width=device-width, initial-scale=1.0' name='viewport' />
-<link href='./style.css?1311531577' rel='stylesheet' />
+<link href='./style.css?1311621998' rel='stylesheet' />
 </head>
 <body>
 <div id='top'>
@@ -24,42 +24,66 @@ ProScribe manual
 <h5>Crappy source documentation tool.</h5>
 </hgroup>
 <div class='content'>
-<h2>Installation</h2>
 
-<pre><code>$ gem install proscribe
-</code></pre>
-
-<h2>Usage</h2>
-
-<p>Make your code project ProScribe-able using <code>proscribe new</code>.</p>
-
-<pre><code>$ proscribe new
+<pre>
+$ gem install proscribe
+</pre>
+<section class='literate'>
+<pre>
+$ proscribe new
   create   Scribefile
   create   manual/
   create   manual/index.md
-</code></pre>
+</pre>
+<h4>Enable ProScribe</h4>
+<p>Make your code project ProScribe-able using <code>proscribe new</code>.</p>
+</section>
+<section class='literate'>
+<pre>
+[lib/foo.rb (rb)]
+# Class: Adaptor
+# Adapts insteads of dying.
+#
+# ## Usage
+#
+#     a = Adaptor.new(plug)
+#
+# ## Description
+#
+#   This is a great class.
+#
+class Adaptor
+  # ...
+end
+</pre>
+<h4>Inline comments</h4>
+<p>Now edit your files in <code>manual/</code> and inline comments in your source code. Use Markdown!</p>
+</section>
+<section class='literate'>
+<pre>
+$ proscribe build
+  ...
 
-<p>Now edit your files in <code>manual/</code> and inline comments in your source code.</p>
-
-<p>To build documentation HTML, use:</p>
-
-<pre><code>$ proscribe build
-</code></pre>
-
-<p>This builds HTML in <code>doc/</code> by default.</p>
-
-<p>You may also preview your changes in real time:</p>
-
-<pre><code>$ proscribe start
+$ ls doc/
+  index.html
+  style.css
+  ...
+</pre>
+<h4>Build as <span class="caps">HTML</span></h4>
+<p>To build documentation <span class="caps">HTML</span>, use this. This builds <span class="caps">HTML</span> in <code>doc/</code> by default.</p>
+</section>
+<section class='literate'>
+<pre>
+$ proscribe start
 * Starting server...
 &gt;&gt; Thin web server (v1.2.11 codename Bat-Shit Crazy)
 &gt;&gt; Maximum connections set to 1024
 &gt;&gt; Listening on 0.0.0.0:4833, CTRL+C to stop
-</code></pre>
-
-<p>Then point your browser to <code>http://localhost:4833</code> to see your changes in real
-time.</p>
-
+</pre>
+<h4>Real-time previews</h4>
+<p>You may also preview your changes in real time. Do this, then point your browser to <code>http://localhost:4833</code> to see your changes in real time.</p>
+</section>
+<p><a class='github-link' href="http://github.com/rstacruz/proscribe">Source code</a></p>
 <h3>Modules</h3>
 <ul class='section'>
 <li>
