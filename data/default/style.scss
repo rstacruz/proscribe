@@ -376,6 +376,26 @@ pre.terminal {
     color: #8d8 * 0.5; }
 }
 
+section.literate {
+    overflow: hidden;
+    padding: 20px 40px;
+    border-top: solid 1px #eee;
+    margin: 0 -40px;
+
+    font-size: 9pt;
+
+    pre + * { margin-top: 0; }
+    &:first-of-type { margin-top: 30px; }
+    &:last-of-type  { margin-bottom: 30px; }
+    
+    p { width: 33%; }
+    pre { float: right; width: 60%; }
+    pre::after { clear: both; }
+
+    h4 { font-size: 1.2em; margin-bottom: 10px; color: #456 * 1.7; }
+    h4 + * { margin-top: 0; }
+}
+
 //
 // Prettify
 //

@@ -1,0 +1,75 @@
+title: ProScribe manual
+brief: Crappy source documentation tool.
+--
+
+<pre>
+$ gem install proscribe
+</pre>
+
+<section class='literate'>
+<pre>
+$ proscribe new
+  create   Scribefile
+  create   manual/
+  create   manual/index.md
+</pre>
+
+h4. Enable ProScribe
+
+Make your code project ProScribe-able using @proscribe new@.
+</section>
+
+<section class='literate'>
+<pre>
+[lib/foo.rb (rb)]
+# Class: Adaptor
+# Adapts insteads of dying.
+#
+# ## Usage
+#
+#     a = Adaptor.new(plug)
+#
+# ## Description
+#
+#   This is a great class.
+#
+class Adaptor
+  # ...
+end
+</pre>
+
+h4. Inline comments
+
+Now edit your files in @manual/@ and inline comments in your source code. Use Markdown!
+</section>
+
+<section class='literate'>
+<pre>
+$ proscribe build
+  ...
+
+$ ls doc/
+  index.html
+  style.css
+  ...
+</pre>
+
+h4. Build as HTML
+
+To build documentation HTML, use this. This builds HTML in @doc/@ by default.
+</section>
+
+<section class='literate'>
+<pre>
+$ proscribe start
+* Starting server...
+>> Thin web server (v1.2.11 codename Bat-Shit Crazy)
+>> Maximum connections set to 1024
+>> Listening on 0.0.0.0:4833, CTRL+C to stop
+</pre>
+
+h4. Real-time previews
+
+You may also preview your changes in real time. Do this, then point your browser to @http://localhost:4833@ to see your changes in real time.
+</section>
+

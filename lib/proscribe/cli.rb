@@ -88,10 +88,10 @@ class ProScribe::CLI < Shake
       copy_files path, File.join(temppath, prefix)
 
       #system "(git add .; git add -u; git commit -m .) > /dev/null"
-      puts "git push origin #{branch}"
-      system "(git add .; git add -u; git commit -m .)"
-      system "git push origin #{branch}"
-
+      Dir.chdir(temppath) {
+        system "(git add .; git add -u; git commit -m .)"
+        system "git push origin #{branch}"
+      }
     else
       puts "Warning: No #{branch} branch found, starting over."
 
