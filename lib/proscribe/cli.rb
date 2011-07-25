@@ -83,12 +83,12 @@ class ProScribe::CLI < Shake
     current_branch = Dir.chdir(temppath) { `git symbolic-ref HEAD`.strip.split('/') }
 
     if current_branch.last == branch
-      puts "Adding files on to #{prefix}/..."
+      puts "Adding files to #{prefix}/..."
       # Did we get the correct branch? Just add on top of it.
       copy_files path, File.join(temppath, prefix)
 
       system "(git add .; git add -u; git commit -m .) > /dev/null"
-      system "git push #{dest} #{branch}"
+      system "git push origin #{branch}"
 
     else
       puts "Warning: No #{branch} branch found, starting over."
