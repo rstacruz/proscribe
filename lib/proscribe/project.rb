@@ -64,7 +64,7 @@ module ProScribe
     #
     def dir(*a)
       @dir ||= begin
-        dir = File.join(Dir.tmpdir, File.basename(root))
+        dir = File.join(Dir.tmpdir, File.basename(root) + Time.now.to_i.to_s)
         FileUtils.rm_rf dir
         FileUtils.mkdir_p dir
         dir
