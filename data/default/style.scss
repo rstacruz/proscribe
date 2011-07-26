@@ -400,7 +400,7 @@ section.literate {
     h4 + * { margin-top: 0; }
 }
 
-a.github-link {
+a.github-link, a[title="Source code"] {
   position: absolute;
   top: 0;
   right: 0;
