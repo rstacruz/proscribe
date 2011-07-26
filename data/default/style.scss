@@ -195,7 +195,7 @@ $pad: 40px;
     }
 
   >h2, >h3 {
-    & + pre {
+    & + pre, & + section {
       margin-top: 20px !important; }
 
     font-size: 2em;

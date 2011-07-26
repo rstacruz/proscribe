@@ -33,22 +33,21 @@ $(function () {
         }
       }
 
-      console.log(sections);
       $this.html(text);
-    }
 
-    var $code = $("<div>");
-    for (i in sections) {
-      var section = sections[i];
-      var $el = $("<section class='literate'>");
-      $el.append($("<pre>").text(section.code.replace(/^\s*|\s*$/g, '')));
-      $el.append($("<h4>").text(section.top));
-      $el.append($("<p>").text(section.comments));
-      $code.append($el);
-    }
+      var $code = $("<div>");
+      for (i in sections) {
+        var section = sections[i];
+        var $el = $("<section class='literate'>");
+        $el.append($("<pre>").text(section.code.replace(/^\s*|\s*$/g, '')));
+        $el.append($("<h4>").text(section.top));
+        $el.append($("<p>").text(section.comments));
+        $code.append($el);
+      }
 
-    $this.after($code);
-    $this.remove();
+      $this.after($code);
+      $this.remove();
+    }
   });
 
   $("pre").each(function() {
