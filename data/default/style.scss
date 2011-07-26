@@ -393,6 +393,7 @@ section.literate {
     
     p { width: 33%; }
     pre { float: right; width: 60%; }
+    pre + pre { margin-top: 20px; }
     pre::after { clear: both; }
 
     h4 { font-size: 1.2em; margin-bottom: 10px; color: #456 * 1.7; }
