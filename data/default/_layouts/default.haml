@@ -18,6 +18,9 @@
 
     %link{:rel => 'stylesheet', :href => rel('/style.css')+"?#{File.mtime(Proton::Page['/style.css'].file).to_i}"}
 
+    %script{src: 'http://cachedcommons.org/cache/prettify/1.0.0/javascripts/prettify-min.js', type: 'text/javascript'}
+    %script{src: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js', type: 'text/javascript'}
+    %script{src: rel('/proscribe.js')+"?#{File.mtime(Proton::Page['/proscribe.js'].file).to_i}", type: 'text/javascript'}
   %body
     #top
       %a#logo{href: rel('/')}
@@ -87,7 +90,3 @@
                       %a{href: rel(pp.path), class: classes.join(' ')}
                         = pp
 
-
-    %script{src: 'http://cachedcommons.org/cache/prettify/1.0.0/javascripts/prettify-min.js', type: 'text/javascript'}
-    %script{src: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js', type: 'text/javascript'}
-    %script{src: rel('/proscribe.js')+"?#{File.mtime(Proton::Page['/proscribe.js'].file).to_i}", type: 'text/javascript'}

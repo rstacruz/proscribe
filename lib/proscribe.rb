@@ -8,6 +8,17 @@ require 'tilt'
 # Module: ProScribe
 # The main module.
 #
+# #### Hello s1
+#
+# yes s1
+#
+#     foo s1
+#     foo s1
+#
+# #### Creating something
+#
+#     s2
+#
 module ProScribe
   def self.root(*a)
     File.join(File.expand_path('../../', __FILE__), *a)

@@ -1,53 +1,22 @@
 $(function () {
-  $("pre").each(function() {
+  $("h4").each(function() {
     var $this = $(this);
-    // Yeah
-    if ($this.text().match(/^\s*# \[literate\][\r\n]+/)) {
-      var text = $this.text();
-      text = text.replace(/^\s*# \[literate\][\r\n]+/, '');
 
-      var lines = text.split('\n');
-      var sections = [];
-      var current = {};
-      var isNew = true;
+    // Find the next p
+    var $p    = $this.find('+ p');
+    if (!$p.length) { $p = $this; }
 
-      for (i in lines) {
-        var line = lines[i] + "\n";
-        var isComment = line.match(/^#/);
+    var $pre = $p.find('+ pre');
+    if (!$pre.length) { return; }
 
-        if ((isNew) && (isComment)) {
-          current = { top: null, comments: '', code: '' };
-          sections.push(current);
-          isNew = false;
-        }
+    // Build it
+    var $el   = $("<section class='literate'>");
+    $this.before($el);
 
-        if (isComment) {
-          if (!current.top) {
-            current.top = line.replace(/^#\s*/, '');
-          } else {
-            current.comments += line.replace(/^#\s*/, '');
-          }
-        } else {
-          current.code += line;
-          isNew = true;
-        }
-      }
-
-      $this.html(text);
-
-      var $code = $("<div>");
-      for (i in sections) {
-        var section = sections[i];
-        var $el = $("<section class='literate'>");
-        $el.append($("<pre>").text(section.code.replace(/^\s*|\s*$/g, '')));
-        $el.append($("<h4>").text(section.top));
-        $el.append($("<p>").text(section.comments));
-        $code.append($el);
-      }
-
-      $this.after($code);
-      $this.remove();
-    }
+    // Move them
+    $el.append($pre);
+    $el.append($this);
+    $el.append($p);
   });
 
   $("pre").each(function() {
