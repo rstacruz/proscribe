@@ -90,34 +90,4 @@
 
     %script{src: 'http://cachedcommons.org/cache/prettify/1.0.0/javascripts/prettify-min.js', type: 'text/javascript'}
     %script{src: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js', type: 'text/javascript'}
-    :javascript
-      $(function () {
-        $("pre").each(function() {
-          var r = /\[(.*?)\s*\((.*?)\)\]\n*/;
-          var m = $(this).text().match(r);
-
-          $(this).addClass('prettyprint');
-
-          if (m) {
-            var file = m[1];
-            var type = m[2];
-            $(this).addClass('lang-'+type);
-
-            if (file.length) {
-              $(this).addClass('has-caption');
-              $(this).prepend($("<h5 class='caption'>").text(file));
-            }
-
-            $(this).html($(this).html().replace(r, ''));
-          }
-
-          if ($(this).text().match(/^\s*([a-zA-Z_~\/]*)\$ /)) {
-            $(this).addClass('terminal');
-            $(this).removeClass('prettyprint');
-            $(this).html($(this).html().replace(/([a-zA-Z_~\/]*\$ )(.*?)[\r\n$]/g, "<strong><em>$1</em>$2</strong>\n"));
-          }
-        });
-
-        prettyPrint();
-      });
-  
+    %script{src: rel('/proscribe.js')+"?#{File.mtime(Proton::Page['/proscribe.js'].file).to_i}", type: 'text/javascript'}
