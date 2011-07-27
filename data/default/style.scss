@@ -135,6 +135,7 @@ $pad: 40px;
 #content {
   @include border-top-radius(2px);
   background: white; padding: 40px;
+  padding-bottom: 140px;
   position: relative;
   @include box-sizing(border-box);
   @include clearfix;
@@ -439,6 +440,56 @@ section.aux-links {
   a:hover {
     background: #888; color: #ddd;
     text-shadow: 1px 1px 0 rgba(black, 0.1); }
+}
+
+section.footer {
+  background: #eee;
+  border-top: solid 1px #eee;
+
+  position: absolute;
+  @include box-sizing(border-box);
+  bottom: 0; left: 0; width: 100%;
+  padding: 20px;
+
+
+  font-size: 0.75em;
+
+  color: #aaa;
+  text-shadow: 1px 1px 0 rgba(white, 0.5);
+
+  @include box-shadow(inset 0 3px 3px rgba(black, 0.1));
+  text-align: left;
+
+  a, strong {
+    color: #888; }
+
+  strong {
+    font-size: 1.1em; }
+
+  span.type {
+    opacity: 0.7;
+    font-weight: normal; font-size: 0.9em;
+    &::before { content: '['; }
+    &::after { content: ']'; } }
+
+  span.arrow {
+    margin: 0 5px; }
+
+  .left {
+    strong { display: block; } }
+
+  .line {
+    font-style: normal; }
+
+  .view-source {
+    background: rgba(black, 0.1);
+    color: #888;
+    padding: 1px 8px;
+    font-size: 0.9em;
+    font-weight: normal;
+    margin-left: 5px;
+    @include border-radius(7px);
+    font-style: normal; }
 }
 
 //

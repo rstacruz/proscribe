@@ -7,8 +7,3 @@ tilt_options:
   haml:
     ugly: true
 
-# Custom stuff
-extractor:
-  files:
-    - source: ../lib/**/*.rb
-      target: api/

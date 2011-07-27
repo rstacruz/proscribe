@@ -4,3 +4,5 @@ files:
 - source: lib/**/*.rb
 
 output: doc
+
+github: rstacruz/proscribe

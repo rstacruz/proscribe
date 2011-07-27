@@ -57,6 +57,28 @@
                     - unless method.meta.brief.to_s.empty?
                       %span.brief= method.meta.brief
 
+            -# Source
+            %section.footer
+              .left
+                %strong
+                  - page.breadcrumbs[1...-1].each do |pp|
+                    %a{href: rel(page.path)}
+                      = pp.title
+                      -# if pp.meta.page_type
+                      -#  %span.type= pp.meta.page_type
+
+                    %span.arrow!= "&rsaquo;"
+
+                  = page.title
+                  - if page.meta.page_type
+                    %span.type= page.meta.page_type
+
+                - if github_source_link
+                  Defined in
+                  %a{href: github_source_link}
+                    %span= page.source_file
+                    %span.view-source!= "View source &rsaquo;"
+
         %nav#nav
           - parent   = (page.children.any? ? page : (page.parent || page))
           - children = parent.children.select { |p| p.html? }

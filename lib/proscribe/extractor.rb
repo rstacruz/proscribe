@@ -17,8 +17,9 @@ module ProScribe
   #   ex.write!('manual/')       # Writes to manual/
   #
   class Extractor
-    def initialize(files, options={})
+    def initialize(files, root, options={})
       @files = files
+      @root  = File.realpath(root)
     end
 
     def write!(output_path = '.', &blk)
@@ -36,17 +37,22 @@ module ProScribe
         @files.map { |file|
           if File.file?(file)
             input = File.read(file)
-            get_blocks input
+            get_blocks(input, unroot(file))
           end
         }.compact.flatten
       end
     end
 
   private
+    def unroot(fn)
+      (File.realpath(fn))[@root.size..-1]
+    end
+
     # Returns blocks that match a blah.
-    def get_blocks(str)
+    def get_blocks(str, filename)
       arr = get_comment_blocks(str)
-      arr.map { |block|
+      arr.map { |hash|
+        block = hash[:block]
         re = /^([A-Za-z ]*?): (.*?)(?: \((.*?)\))?$/
 
         if block.last =~ re
@@ -54,32 +60,37 @@ module ProScribe
             :type => $1,
             :title => $2,
             :parent => $3,
+            :line => hash[:line] + block.size + 1,
+            :source => filename,
             :body => (block[0..-2].join("\n") + "\n")
         elsif block.first =~ re
           Extractor::Block.new \
             :type => $1,
             :title => $2,
             :parent => $3,
+            :line => hash[:line] + block.size + 1,
+            :source => filename,
             :body => (block[1..-1].join("\n") + "\n")
         end
       }.compact
     end
 
     # Returns contiguous comment blocks.
+    # Returns an array of hashes (:block => [line1,line2...], :line => n)
     def get_comment_blocks(str)
       chunks = Array.new
       i = 0
 
-      str.split("\n").each { |s|
+      str.split("\n").each_with_index { |s, line|
         if s =~ /^\s*(?:\/\/\/?|##?) ?(.*)$/
-          chunks[i] ||= Array.new
-          chunks[i] << $1
+          chunks[i] ||= { :block => Array.new, :line => line }
+          chunks[i][:block] << $1
         else
           i += 1  if chunks[i]
         end
       }
 
-      chunks
+      chunks.compact
     end
   end
 
@@ -93,11 +104,14 @@ module ProScribe
       body   = options[:body]
       type   = options[:type].downcase
 
+      source = options[:source]
+      line   = options[:line]
+
       file = to_filename(title, parent)
       brief, *body = body.split("\n\n")
       body = "#{body.join("\n\n")}"
 
-      heading = "title: #{title}\npage_type: #{type}\nbrief: #{brief}\n"
+      heading = "title: #{title}\npage_type: #{type}\nsource_file: #{source}\nsource_line: #{line}\nbrief: #{brief}\n"
       heading += "--\n"
 
       @file = file

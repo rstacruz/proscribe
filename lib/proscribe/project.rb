@@ -52,11 +52,31 @@ module ProScribe
       # Copy manual files over
       copy_files manual_path, dir, :except => ['Gemfile', 'Gemfile.lock', 'config.ru']
 
+      # Merge Scribefile into Protonfile
+      File.open(File.join(dir, 'Protonfile'), 'w') { |f| f.write protonfile }
+
       # Extract block comments
       config.files.each do |group|
-        ex = ProScribe::Extractor.new Dir[root(group.source)]
+        ex = ProScribe::Extractor.new(Dir[root(group.source)], root)
         ex.write! File.join(dir, group.prefix || '')
       end
+    end
+
+    def protonfile
+      yaml = YAML::load_file(ProScribe.root('data/default/Protonfile'))
+
+      # Copy from Scribefile
+      c = config.to_hash.dup
+      c.delete 'manual'
+      c.delete 'output'
+      c.delete 'files'
+
+      # Add some things
+      c['git'] = `git rev-parse HEAD`.strip
+
+      yaml.merge! c
+
+      YAML::dump yaml
     end
 
     # Attribute: dir (ProScribe::Project)

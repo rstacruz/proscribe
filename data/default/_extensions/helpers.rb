@@ -10,6 +10,15 @@ module Proton::Helpers
         type.nil? ? nil : Inflector[type].pluralize.to_sym
       }
   end
+
+  # A link to the source file on GitHub
+  def github_source_link
+    if project.config.github && project.config.git
+      if page.meta.source_file
+        "https://github.com/#{project.config.github}/blob/#{project.config.git[0..6]}/#{page.source_file}#L#{page.source_line}".squeeze('/')
+      end
+    end
+  end
 end
 
 # Inflector['hello'].pluralize
