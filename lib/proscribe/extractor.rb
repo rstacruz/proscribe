@@ -4,17 +4,20 @@ require 'ostruct'
 require 'fileutils'
 
 module ProScribe
+  # Class: Extractor (ProScribe)
   # Extracts comments from list of files.
-  # Gets the ones with comment blocks starting with `[...]`
   #
-  # == Common usage
+  # ## Description
+  #    Gets the ones with comment blocks starting with `[...]`
   #
-  #   ex = Extractor.new(Dir['./**/*.rb'])
-  #   ex.blocks
+  # ## Common usage
   #
-  #   ex.blocks.map! { |b| b.file = "file: #{b.file}" }
+  #     ex = Extractor.new(Dir['./**/*.rb'])
+  #     ex.blocks
   #
-  #   ex.write!('manual/')       # Writes to manual/
+  #     ex.blocks.map! { |b| b.file = "file: #{b.file}" }
+  #
+  #     ex.write!('manual/')       # Writes to manual/
   #
   class Extractor
     def initialize(files, root, options={})
@@ -31,7 +34,8 @@ module ProScribe
       }
     end
 
-    # Returns an array of Extractor::Blocks.
+    # Method: blocks (ProScribe::Extractor)
+    # Returns an array of {Extractor::Block}s.
     def blocks
       @blocks ||= begin
         @files.map { |file|
@@ -127,7 +131,7 @@ module ProScribe
       indent = (depth > 1 ? '../'*(depth-1) : './')[0..-2]
 
       # First pass, {Helpers::content_for} to become links
-      str = str.gsub(/{([^}]*?)}/) { |s|
+      str = str.gsub(/{(?!\s)([^}]*?)(?<!\s)}/) { |s|
         s = s.gsub(/{|}/, '')
 
         m = s.match(/^(.*?)[:\.]+([A-Za-z_\(\)\!\?]+)$/)
@@ -151,6 +155,9 @@ module ProScribe
       }
     end
 
+    # Private method: to_filename (ProScribe::Extractor)
+    # Changes something to a filename.
+    #
     def to_filename(title, parent='', options={})
       extension = options[:ext] || '.erb'
       pathify = lambda { |s|
