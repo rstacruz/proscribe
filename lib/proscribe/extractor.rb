@@ -128,6 +128,7 @@ module ProScribe
       # Build the hash thing.
       header['page_type'] = type
       header['brief'] = brief
+      header['inherits'] = resolve(header['inherits']) { |fname, _, _| fname }  if header['inherits']
       heading = YAML::dump(header).gsub(/^[\-\n]*/, '').strip
       heading += "\n--\n"
 
@@ -138,13 +139,8 @@ module ProScribe
     end
 
   private
-    def fix_links(str, options={})
-      from = ("/" + options[:from].to_s).squeeze('/')
-      depth = from.to_s.count('/')
-      indent = (depth > 1 ? '../'*(depth-1) : './')[0..-2]
-
-      # First pass, {Helpers::content_for} to become links
-      str = str.gsub(/{(?!\s)([^}]*?)(?<!\s)}/) { |s|
+    def resolve(str, &blk)
+      str.gsub(/{(?!\s)([^}]*?)(?<!\s)}/) { |s|
         s = s.gsub(/{|}/, '')
 
         m = s.match(/^(.*?)[:\.]+([A-Za-z_\(\)\!\?]+)$/)
@@ -154,7 +150,19 @@ module ProScribe
           name, context = s, nil
         end
 
-        s = "<a href='/#{to_filename(s, '', :ext => '.html')}'>#{name}</a>"
+        fname = to_filename(s, '', :ext => '.html')
+        yield fname, name, context
+      }
+    end
+
+    def fix_links(str, options={})
+      from = ("/" + options[:from].to_s).squeeze('/')
+      depth = from.to_s.count('/')
+      indent = (depth > 1 ? '../'*(depth-1) : './')[0..-2]
+
+      # First pass, {Helpers::content_for} to become links
+      str = resolve(str) { |fname, name, context|
+        s = "<a href='/#{fname}'>#{name}</a>"
         s += " <span class='context'>(#{context})</span>"  if context
         s
       }
