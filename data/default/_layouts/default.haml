@@ -24,7 +24,7 @@
   %body
     #top
       %a#logo{href: rel('/')}
-        = Hyde::Page['/'].title
+        = Proton::Page['/'].title
 
     #area
       #content
@@ -44,18 +44,16 @@
               %h5= page.meta.brief
 
           .content
+            - if page.meta.usage
+              %h2 Usage
+              %pre= page.meta.usage
+
             != yield
 
-            - groups = page_children(page)
-            - groups.each do |type, children|
-              %h3= type.to_s.gsub('_', ' ').capitalize
-
-              %ul.section
-                - children.each do |method|
-                  %li
-                    %a{href: rel(method.path)}= method.title
-                    - unless method.meta.brief.to_s.empty?
-                      %span.brief= method.meta.brief
+            != partial :_subindex, :from => page
+            - if page.meta.inherits
+              - pages = page.meta.inherits.split(' ').map { |path| Proton::Page[path] }
+              != partial :_subindex, :from => pages, :suffix => "(Inherited)"
 
             -# Source
             %section.footer
