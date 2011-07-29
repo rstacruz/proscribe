@@ -106,15 +106,28 @@ module ProScribe
       options[:type].downcase!
       body = options.delete(:body)
       type = options.delete(:type)
-
-      # Extract the brief.
       file = to_filename(options[:title], options[:parent])
-      brief, *body = body.split("\n\n")
-      body = "#{body.join("\n\n")}"
 
       # Build the hash thing.
       header  = Hash[options.map { |(k, v)| [k.to_s, v] }]
+
+      # Extract the brief and other artifacts.
+      body = body.split("\n")
+      while true
+        line = body.first
+        if line =~ /^(.*?): (.*?)$/
+          header[$1.downcase] = $2.strip
+          body.shift
+        else
+          brief = body.shift
+          break
+        end
+      end
+      body = body.join("\n")
+
+      # Build the hash thing.
       header['page_type'] = type
+      header['brief'] = brief
       heading = YAML::dump(header).gsub(/^[\-\n]*/, '').strip
       heading += "\n--\n"
 
