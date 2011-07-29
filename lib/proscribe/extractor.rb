@@ -118,6 +118,8 @@ module ProScribe
         if line =~ /^(.*?): (.*?)$/
           header[$1.downcase] = $2.strip
           body.shift
+        elsif line.strip.empty?
+          # pass
         else
           brief = body.shift
           break
