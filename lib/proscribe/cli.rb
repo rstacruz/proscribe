@@ -6,11 +6,14 @@ class ProScribe::CLI < Shake
   extend ProScribe::Helpers
 
   task(:build) do
+
     project.make
     pass project.dir  if ARGV.delete('-d') || ARGV.delete('--debug')
 
-    Dir.chdir(project.dir) {
-      system "proton build"
+    require 'proton'
+    pro = Proton::Project.new project.dir
+    pro.build { |file|
+      puts "* %-35s %-35s" % [ file, "(#{file.path})" ]
     }
 
     copy_files project.dir('_output'), project.root(project.config.output)

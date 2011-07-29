@@ -115,11 +115,13 @@ module ProScribe
       body = body.split("\n")
       while true
         line = body.first
-        if line =~ /^(.*?): (.*?)$/
+        if line.nil?
+          break
+        elsif line =~ /^(.*?): (.*?)$/
           header[$1.downcase] = $2.strip
           body.shift
         elsif line.strip.empty?
-          # pass
+          body.shift
         else
           brief = body.shift
           break

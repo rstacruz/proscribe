@@ -1,3 +1,4 @@
+require 'proton'
 require 'yaml'
 require 'fileutils'
 require 'tmpdir'
