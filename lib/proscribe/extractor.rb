@@ -64,16 +64,16 @@ module ProScribe
             :type => $1,
             :title => $2,
             :parent => $3,
-            :line => hash[:line] + block.size + 1,
-            :source => filename,
+            :source_line => hash[:line] + block.size + 1,
+            :source_file => filename,
             :body => (block[0..-2].join("\n") + "\n")
         elsif block.first =~ re
           Extractor::Block.new \
             :type => $1,
             :title => $2,
             :parent => $3,
-            :line => hash[:line] + block.size + 1,
-            :source => filename,
+            :source_line => hash[:line] + block.size + 1,
+            :source_file => filename,
             :body => (block[1..-1].join("\n") + "\n")
         end
       }.compact
@@ -103,20 +103,20 @@ module ProScribe
     attr_accessor :file
 
     def initialize(options)
-      title  = options[:title]
-      parent = options[:parent]
-      body   = options[:body]
-      type   = options[:type].downcase
+      options[:type].downcase!
+      body = options.delete(:body)
+      type = options.delete(:type)
 
-      source = options[:source]
-      line   = options[:line]
-
-      file = to_filename(title, parent)
+      # Extract the brief.
+      file = to_filename(options[:title], options[:parent])
       brief, *body = body.split("\n\n")
       body = "#{body.join("\n\n")}"
 
-      heading = "title: #{title}\npage_type: #{type}\nsource_file: #{source}\nsource_line: #{line}\nbrief: #{brief}\n"
-      heading += "--\n"
+      # Build the hash thing.
+      header  = Hash[options.map { |(k, v)| [k.to_s, v] }]
+      header['page_type'] = type
+      heading = YAML::dump(header).gsub(/^[\-\n]*/, '').strip
+      heading += "\n--\n"
 
       @file = file
       body  = Tilt.new(".md") { body }.render
