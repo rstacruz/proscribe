@@ -6,6 +6,6 @@ module ProScribe
   #     ProScribe.version     #=> "0.0.2"
   #
   def self.version
-    "0.0.4"
+    "0.0.5"
   end
 end

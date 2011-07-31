@@ -116,7 +116,7 @@ $(function () {
 
 
     // Limit results
-    results = results.slice(0, 8);
+    results = results.slice(0, 12);
 
     _.each(results, function(page) {
       // Build the options for the tempalte
