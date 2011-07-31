@@ -523,6 +523,9 @@ section.footer {
 
     @include box-shadow(2px 2px 0 rgba(black, 0.1), 0 0 2px rgba(black, 0.08));
 
+    em.highlight {
+      color: #a96; background: #fefee8; }
+
     &, li { list-style-type: none; margin: 0; padding: 0; }
 
     li {

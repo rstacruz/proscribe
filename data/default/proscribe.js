@@ -114,11 +114,24 @@ $(function () {
     $el.show();
     $el.html('');
 
+
+    // Limit results
+    results = results.slice(0, 8);
+
     _.each(results, function(page) {
+      // Build the options for the tempalte
       o = _.extend({}, page);
+
+      _.each(keyword.split(' '), function(word) {
+        console.log("Replacing ", word, " in ", o.title);
+        o.title = o.title.replace(new RegExp(word, 'i'), function (n) {
+          return "<em class='highlight'>" + n + "</em>";
+        });
+      });
+
       o.url = urlPrefix + page.url;
-      console.log("Finding", page.parent);
       o.parent = PageIndex[page.parent];
+
       $el.append(template(o));
     });
 
