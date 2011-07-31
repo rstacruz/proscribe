@@ -102,7 +102,7 @@ $(function () {
           "</strong>" +
           "<span>" +
           "<% if (parent) { %>" + 
-            "<%= parent.title %> &rarr; <%= title %>" +
+            "<%= parent.title %> &rsaquo; <%= title %>" +
           "<% } %>" +
           "</span>" +
         "</a>" +
