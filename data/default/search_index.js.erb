@@ -11,6 +11,9 @@ layout: false
   index = Hash.new { |hash, k| hash[k] = Hash.new { |hh, kk| hh[kk] = 0 } }
   words = lambda { |str| str.to_s.downcase.scan(/[A-Za-z0-9\_]+/) }
   fuzzies = lambda { |str| str = str.to_s.downcase; (1...str.size).map { |n| str[0..n] } }
+  fuzzy_words = lambda { |str|
+    words[str].map { |word| fuzzies[word]  if word.size > 2 and !stopwords.include?(word) }.compact.flatten
+  }
 
   urls = pages.map { |p| p.path }
 
@@ -21,20 +24,18 @@ layout: false
 
     if p.to_s.count(' ') > 0
       # Partial title match
-      words[p].each { |word| index[word][i] += 30 }
+      fuzzy_words[p].each { |word| index[word][i] += 30 }
 
     else
       # Exact title match
-      words[p].each { |word| index[word][i] += 60 }
+      fuzzy_words[p].each { |word| index[word][i] += 60 }
     end
 
     # Fuzzy title match
-    fuzzies[p].each { |word| index[word][i] += 3 }
+    fuzzy_words[p].each { |word| index[word][i] += 3 }
 
     # p content
-    words[p.content].each do |word|
-      index[word][i] += 1  if word.size > 2 and !stopwords.include?(word)
-    end
+    fuzzy_words[p.content].each { |word| index[word][i] += 1 }
   end
 %>
 

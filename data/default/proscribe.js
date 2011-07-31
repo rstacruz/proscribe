@@ -71,9 +71,6 @@ $(function () {
 
   window.search = search;
 
-  $("#search form").submit(function (e) {
-  });
-
   $("#search input").live('keyup', function(e) {
     if (e.keyCode == 13) {
       var $a = $("#search .results > .active a");
