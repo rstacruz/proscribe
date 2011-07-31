@@ -4,7 +4,7 @@ module Proton::Helpers
     of_type  = lambda { |str| children.select { |p| p.html? && p.meta.page_type == str } }
 
     children.
-      select { |p| p.html? }.
+      select { |p| p.html? && p.path =~ /.html$/ }.
       group_by { |p|
         type = p.meta.page_type
         type.nil? ? nil : Inflector[type].pluralize.to_sym

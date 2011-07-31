@@ -20,7 +20,8 @@
 
     %script{src: 'http://cachedcommons.org/cache/prettify/1.0.0/javascripts/prettify-min.js', type: 'text/javascript'}
     %script{src: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.6.2/jquery.min.js', type: 'text/javascript'}
-    %script{src: rel('/proscribe.js')+"?#{File.mtime(Proton::Page['/proscribe.js'].file).to_i}", type: 'text/javascript'}
+    %script{src: rel('/underscore.js')+"?#{File.mtime(Proton::Page['/underscore.js'].file).to_i}", type: 'text/javascript'}
+    %script#proscribe-js{src: rel('/proscribe.js')+"?#{File.mtime(Proton::Page['/proscribe.js'].file).to_i}", type: 'text/javascript'}
   %body
     #top
       %a#logo{href: rel('/')}
@@ -28,6 +29,11 @@
 
     #area
       #content
+        %section#search
+          %form
+            %input{type: "text", placeholder: "Search..."}
+          %ul.results
+
         %div.c
           #crumbs
             - page.breadcrumbs[0..-2].each do |p|
@@ -79,7 +85,7 @@
 
         %nav#nav
           - parent   = (page.children.any? ? page : (page.parent || page))
-          - children = parent.children.select { |p| p.html? }
+          - children = parent.children.select { |p| p.html? && p.path =~ /.html$/ }
           - groups   = children.group_by { |p| p.meta.page_type }
 
           - if parent && !parent.root?
@@ -110,3 +116,4 @@
                       %a{href: rel(pp.path), class: classes.join(' ')}
                         = pp
 
+    %script{src: rel('/search_index.js')+"?#{Time.now.to_i}", type: 'text/javascript'}

@@ -1,4 +1,6 @@
 $(function () {
+  var urlPrefix = $("#proscribe-js").attr('src').match(/^(.*)\/[^.]+.js[\?0-9]*/)[1];
+
   $("h4").each(function() {
     var $this = $(this);
 
@@ -47,6 +49,101 @@ $(function () {
     }
   });
 
+  function searchToPages(dict) {
+    // {"0":4, "1":5} -- this is a pair of `page_id` => `result_score`.
+
+    list = _.map(dict, function(val, key) { return [key, val]; }); // {a:2} => [[a,2]] (pageid => score)
+    list = _.sortBy(list, function(a) { return -1 * a[1]; });
+    ids  = _.map(list, function(a) { return parseInt(a[0]); }); // Basically Hash#keys, now an array of page_id's
+    return _.map(ids, function(id) { return PageIndex[id] });
+  }
+  
+  function search(keyword) {
+      var words = keyword.toLowerCase().split(' ');
+
+      var results = {};
+      _.each(words, function(word) {
+        results = SearchIndex[word];
+      });
+
+      return searchToPages(results);
+  }
+
+  window.search = search;
+
+  $("#search form").submit(function (e) {
+  });
+
+  $("#search input").live('keyup', function(e) {
+    if (e.keyCode == 13) {
+      var $a = $("#search .results > .active a");
+      if ($a.length) {
+        window.location = $a.attr('href');
+        return false;
+      };
+    }
+    if ((e.keyCode == 40) || (e.keyCode == 38)) { // DOWN and UP
+      var dir = e.keyCode == 40 ? 'next' : 'prev';
+
+      var links  = $("#search .results li");
+      var active = $("#search .results .active");
+      var next   = active[dir]();
+
+      if (active.length && next.length) {
+        active.removeClass('active');
+        next.addClass('active');
+      }
+
+      return false;
+    }
+
+    var template = _.template(
+      "<li>" + 
+        "<a href='<%= url %>'>" +
+          "<strong>" + 
+            "<%= title %> <span><%= type %></span>" +
+          "</strong>" +
+          "<span>" +
+          "<% if (parent) { %>" + 
+            "<%= parent.title %> &rarr; <%= title %>" +
+          "<% } %>" +
+          "</span>" +
+        "</a>" +
+      "</li>");
+    var keyword = $(this).val();
+    results = search(keyword); // Array of {title: __, url: __}
+
+    var $el = $("#search .results");
+    $el.show();
+    $el.html('');
+
+    _.each(results, function(page) {
+      o = _.extend({}, page);
+      o.url = urlPrefix + page.url;
+      console.log("Finding", page.parent);
+      o.parent = PageIndex[page.parent];
+      $el.append(template(o));
+    });
+
+    $el.find(':first-child').addClass('active');
+  });
+
+  $("#search .results li").live('hover', function() {
+    var $results = $(this).closest('ul');
+    $results.find('.active').removeClass('active');
+    $(this).addClass('active');
+  });
+
+  $("#search .results").live('mouseout', function() {
+    var $results = $(this);
+    $results.find('.active').removeClass('active');
+    $results.find('>:first-child').addClass('active');
+  });
+
+
+  $("body").live('click', function() {
+    $("#search .results").hide();
+  });
+
   prettyPrint();
 });
-

@@ -492,6 +492,63 @@ section.footer {
     font-style: normal; }
 }
 
+// Search
+#search {
+  position: absolute; right: 0; top: -32px; z-index: 10;
+  float: right;
+
+  form {
+    display: inline; }
+
+  input {
+    padding: 2px 10px; height: 18px; background: white;
+    width: 130px;
+    border: 0;
+    @include border-radius(13px);
+    @include box-shadow(1px 1px 0 rgba(black, 0.2), inset 0 0 2px rgba(black, 0.1)); }
+
+  input:active, input:focus {
+    @include box-shadow(0 0 4px #7bd);
+    outline: 0; }
+
+  .results {
+    display: none;
+    background: white;
+    font-size: 7pt;
+    width: 200px;
+    position: absolute; top: 32px; right: 0;
+    z-index: 20;
+
+    @include box-shadow(2px 2px 0 rgba(black, 0.1), 0 0 2px rgba(black, 0.08));
+
+    &, li { list-style-type: none; margin: 0; padding: 0; }
+
+    li {
+      border-bottom: solid 1px #eee; }
+
+    a {
+     height: 3.2em; overflow: hidden;
+     display: block; padding: 5px 10px; color: #999; }
+
+    a span {
+      color: #aaa; }
+
+    li.active a {
+      background: #eee; color: #444; }
+
+    strong {
+      overflow: hidden;
+      display: block; font-weight: bold; font-size: 8pt;
+      color: #333; }
+
+    strong span {
+      float: right;
+      font-size: 7pt;
+      margin-top: 1px;
+      color: #999; font-weight: normal; }
+  }
+}
+
 //
 // Prettify
 //
