@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>Watcher</title>
+<title>Extractor</title>
 <meta charset='UTF-8' />
 <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
 <meta content='width=device-width, initial-scale=1.0' name='viewport' />
@@ -31,17 +31,25 @@ ProScribe manual
 <span class='gt'>&rarr;</span>
 <a href='../proscribe.html'>ProScribe</a>
 <span class='gt'>&rarr;</span>
-<strong>Watcher</strong>
+<strong>Extractor</strong>
 </div>
 <hgroup>
-<h1>Watcher</h1>
-<h5>Monitors files for changes.</h5>
+<h1>Extractor</h1>
+<h5>Extracts comments from list of files.</h5>
 </hgroup>
 <div class='content'>
+<h2>Description</h2>
+
+<p>   Gets the ones with comment blocks starting with <code>[...]</code></p>
+
 <h2>Common usage</h2>
 
-<pre><code>w = Watcher.new(project) { puts 'update' }
-w.join
+<pre><code>ex = Extractor.new(Dir['./**/*.rb'])
+ex.blocks
+
+ex.blocks.map! { |b| b.file = "file: #<a href="../b_/file_.html">file</a> <span class='context'>(b)</span>" }
+
+ex.write!('manual/')       # Writes to manual/
 </code></pre>
 
 <h3>
@@ -49,33 +57,33 @@ Methods
 </h3>
 <ul class='section'>
 <li>
-<a href='../proscribe/watcher/join_.html'>join</a>
-<span class='brief'>Asks all threads to join.</span>
+<a href='../proscribe/extractor/blocks_.html'>blocks</a>
+<span class='brief'>Returns an array of {Extractor::Block}s.</span>
 </li>
 </ul>
 <h3>
-Attributes
+Private methods
 </h3>
 <ul class='section'>
 <li>
-<a href='../proscribe/watcher/threads_.html'>threads</a>
-<span class='brief'>The threads.</span>
+<a href='../proscribe/extractor/to_filename_.html'>to_filename</a>
+<span class='brief'>Changes something to a filename.</span>
 </li>
 </ul>
 
 <section class='footer'>
 <div class='left'>
 <strong>
-<a href='../proscribe/watcher.html'>
+<a href='../proscribe/extractor.html'>
 ProScribe
 </a>
 <span class='arrow'>&rsaquo;</span>
-Watcher
+Extractor
 <span class='type'>class</span>
 </strong>
 Defined in
-<a href='https:/github.com/rstacruz/proscribe/blob/1109f6c/lib/proscribe/watcher.rb#L9'>
-<span>/lib/proscribe/watcher.rb</span>
+<a href='https:/github.com/rstacruz/proscribe/blob/1109f6c/lib/proscribe/extractor.rb#L22'>
+<span>/lib/proscribe/extractor.rb</span>
 <span class='view-source'>View source &rsaquo;</span>
 </a>
 </div>
@@ -100,9 +108,9 @@ ProScribe
 </a>
 </li>
 <li>
-<a class='active' href='../proscribe/watcher.html'>
+<a class='active' href='../proscribe/extractor.html'>
 <em>class</em>
-Watcher
+Extractor
 </a>
 </li>
 </ul>
@@ -111,18 +119,18 @@ Watcher
 <h4>Methods</h4>
 <ul>
 <li>
-<a class='' href='../proscribe/watcher/join_.html'>
-join
+<a class='' href='../proscribe/extractor/blocks_.html'>
+blocks
 </a>
 </li>
 </ul>
 </nav>
 <nav>
-<h4>Attributes</h4>
+<h4>Private methods</h4>
 <ul>
 <li>
-<a class='' href='../proscribe/watcher/threads_.html'>
-threads
+<a class='' href='../proscribe/extractor/to_filename_.html'>
+to_filename
 </a>
 </li>
 </ul>
@@ -130,6 +138,6 @@ threads
 </nav>
 </div>
 </div>
-<script src='../search_index.js?1312141006' type='text/javascript'></script>
+<script src='../search_index.js?1312141005' type='text/javascript'></script>
 </body>
 </html>
