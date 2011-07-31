@@ -1,5 +1,9 @@
-v0.0.4 - Jul 29, 2011
+v0.0.4 - Aug 01, 2011
 ---------------------
+
+### Changed:
+  * Upgrade Proton. This makes things so much faster.
+  * Improvements and stuff.
 
 ### Added:
   * support for 'Usage: xx'
